@@ -18,7 +18,7 @@ class VideoMod:
         self.output_dir = Path(output_dir)
         self.source_path = None
 
-    def assign_vid(self, video="dmvsource.mp4"):
+    def assign_vid(self, video="video.mp4"):
         """Read a video file and assign it to the instance."""
         self.source_path = Path(video)
         with self.source_path.open("rb") as file_handle:
@@ -75,7 +75,7 @@ class VideoMod:
 
 
 def run_iterations(
-    video_path="dmvsource.mp4",
+    video_path="video.mp4",
     iterations=250,
     mode="shift",
     chain=False,
@@ -101,7 +101,7 @@ def run_iterations(
 def build_parser():
     """Create the CLI argument parser."""
     parser = argparse.ArgumentParser(description="Corrupt a video by random byte edits.")
-    parser.add_argument("video", nargs="?", default="dmvsource.mp4", help="Input video path")
+    parser.add_argument("video", nargs="?", default="video.mp4", help="Input video path")
     parser.add_argument(
         "--mode",
         choices=["random", "shift"],

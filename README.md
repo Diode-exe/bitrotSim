@@ -11,8 +11,8 @@ pip install -e .
 ## CLI usage
 
 ```bash
-pyvidcorrupt dmvsource.mp4 --mode shift --iterations 10
-python -m pyvidcorrupt dmvsource.mp4 --mode random --iterations 5 --output-dir output
+pyvidcorrupt video.mp4 --mode shift --iterations 10
+python -m pyvidcorrupt video.mp4 --mode random --iterations 5 --output-dir output
 ```
 
 ## Python usage
@@ -21,10 +21,10 @@ python -m pyvidcorrupt dmvsource.mp4 --mode random --iterations 5 --output-dir o
 from pyvidcorrupt import VideoMod, run_iterations
 
 video_mod = VideoMod(bit_flip_count=1000, output_dir="output")
-video_mod.assign_vid("dmvsource.mp4")
+video_mod.assign_vid("video.mp4")
 video_mod.shift_vid()
 
-run_iterations("dmvsource.mp4", iterations=10, mode="random")
+run_iterations("video.mp4", iterations=10, mode="random")
 ```
 
 ## Notes
