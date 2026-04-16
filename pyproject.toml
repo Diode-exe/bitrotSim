@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyvidcorrupt"
+version = "0.1.0"
+description = "Byte-level video corruption experiments with random replacement and shift modes."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Rohan" }
+]
+dependencies = []
+
+[project.scripts]
+pyvidcorrupt = "pyvidcorrupt.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyvidcorrupt*"]
