@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyvidcorrupt"
-version = "0.1.0"
+version = "0.2.0"
 description = "Byte-level video corruption experiments with random replacement and shift modes."
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-  { name = "Rohan" email = "pydev@diodescaer.com"}
+  { name = "Rohan", email = "pydev@diodescaer.com"}
 ]
 dependencies = []
 

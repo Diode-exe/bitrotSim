@@ -1,8 +1,6 @@
 import cv2
 import random
 import numpy as np
-from typing import Optional
-
 
 class RandomGray:
     """Write randomized visual effects into a video.
