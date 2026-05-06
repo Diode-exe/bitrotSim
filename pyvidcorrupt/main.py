@@ -85,11 +85,23 @@ def run_iterations(
     bit_flip_count=250,
     output_dir="output",
     seed=None,
+    print_seed=False,
     quiet=False,
 ):
     """Run the selected corruption mode repeatedly."""
-    if seed is not None:
+    if seed is None:
+        # If the user requested printing the seed, choose a reproducible
+        # integer seed from system entropy and apply it so the run is
+        # repeatable and the printed value actually represents the seed.
+        if print_seed:
+            seed = random.SystemRandom().randint(0, 2**32 - 1)
+            random.seed(seed)
+            print(f"Using random seed: {seed}")
+        # Otherwise leave the global RNG unseeded (system entropy)
+    else:
         random.seed(seed)
+        if print_seed:
+            print(f"Using chosen seed: {seed}")
     video_mod = VideoMod(bit_flip_count=bit_flip_count, output_dir=output_dir, quiet=quiet)
     video_mod.assign_vid(video_path)
 
@@ -160,8 +172,6 @@ def main(argv=None):
     """Run the package CLI."""
     parser = build_parser()
     args = parser.parse_args(argv)
-    if args.print_seed and args.seed is not None:
-        print(f"Using random seed: {args.seed}")
     run_iterations(
         video_path=args.video,
         iterations=args.iterations,
@@ -170,6 +180,7 @@ def main(argv=None):
         bit_flip_count=args.bit_flip_count,
         output_dir=args.output_dir,
         seed=args.seed,
+        print_seed=args.print_seed,
         quiet=args.quiet,
     )
     return 0
