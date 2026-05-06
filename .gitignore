@@ -183,3 +183,4 @@ cython_debug/
 output/
 
 *.mp4
+tests/tmp_seed_test/input.bin

@@ -6,7 +6,7 @@ class RandomGray:
     """Write randomized visual effects into a video.
 
     Modes:
-    - "luma": modify only the luma (Y) channel and neutralize chroma so patches desaturate correctly.
+    - "luma": modify only the luma (Y) channel and neutralize chroma so patches desaturate correctly
     - "blocky": paint macroblocks filled with their mean color to simulate compression blocking.
     - "bitflip": encode each frame to JPEG, flip random bits in the encoded bytes, then decode
       to produce unpredictable glitch artifacts.

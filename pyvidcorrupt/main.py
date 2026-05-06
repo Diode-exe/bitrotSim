@@ -10,12 +10,13 @@ from pathlib import Path
 class VideoMod:
     """Handle byte-level video corruption and output generation."""
 
-    def __init__(self, video=None, bit_flip_count=1000, output_dir="output"):
+    def __init__(self, video=None, bit_flip_count=1000, output_dir="output", quiet=False):
         self.video = video
         self.amount_of_files = 0
         self.bit_flip_count = bit_flip_count
         self.new_video = None
         self.output_dir = Path(output_dir)
+        self.quiet = quiet
         self.source_path = None
 
     def assign_vid(self, video="video.mp4"):
@@ -38,13 +39,15 @@ class VideoMod:
         with out_path.open("wb") as file_handle:
             file_handle.write(modified_video)
         self.new_video = str(out_path)
-        print(f"{message}: {self.new_video}")
+        if not self.quiet:
+            print(f"{message}: {self.new_video}")
         return self.new_video
 
     def mod_vid(self):
         """Modify the video by changing random bytes and save it."""
         if self.video is None:
-            print("No video assigned.")
+            if not self.quiet:
+                print("No video assigned.")
             return None
 
         modified_video = bytearray(self.video)
@@ -57,7 +60,8 @@ class VideoMod:
     def shift_vid(self):
         """Shift random byte values left or right and save the result."""
         if self.video is None:
-            print("No video assigned.")
+            if not self.quiet:
+                print("No video assigned.")
             return None
 
         modified_video = bytearray(self.video)
@@ -80,9 +84,13 @@ def run_iterations(
     chain=False,
     bit_flip_count=250,
     output_dir="output",
+    seed=None,
+    quiet=False,
 ):
     """Run the selected corruption mode repeatedly."""
-    video_mod = VideoMod(bit_flip_count=bit_flip_count, output_dir=output_dir)
+    if seed is not None:
+        random.seed(seed)
+    video_mod = VideoMod(bit_flip_count=bit_flip_count, output_dir=output_dir, quiet=quiet)
     video_mod.assign_vid(video_path)
 
     for _ in range(iterations):
@@ -125,6 +133,22 @@ def build_parser():
         help="Directory where generated files are written",
     )
     parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Integer seed for the random number generator (reproducible results)",
+    )
+    parser.add_argument(
+        "--print-seed",
+        action="store_true",
+        help="Print the random seed used (for reproducibility)",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress output messages about generated files",
+    )
+    parser.add_argument(
         "--chain",
         action="store_true",
         help="Use each generated file as the input for the next iteration",
@@ -136,6 +160,8 @@ def main(argv=None):
     """Run the package CLI."""
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.print_seed and args.seed is not None:
+        print(f"Using random seed: {args.seed}")
     run_iterations(
         video_path=args.video,
         iterations=args.iterations,
@@ -143,6 +169,8 @@ def main(argv=None):
         chain=args.chain,
         bit_flip_count=args.bit_flip_count,
         output_dir=args.output_dir,
+        seed=args.seed,
+        quiet=args.quiet,
     )
     return 0
 
